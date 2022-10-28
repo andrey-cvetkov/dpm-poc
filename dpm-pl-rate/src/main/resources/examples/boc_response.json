@@ -1,0 +1,42 @@
+[
+    {
+        "exchangeRateId": "AUD-CAD",
+        "exchangeRate": "0.9702",
+        "currencyTo": "CAD",
+        "activationDate": "2017-01-03",
+        "currencyFrom": "AUD",
+        "expirationDate": "2017-01-04"
+    },
+    {
+        "exchangeRateId": "AUD-CAD",
+        "exchangeRate": "0.9678",
+        "currencyTo": "CAD",
+        "activationDate": "2017-01-04",
+        "currencyFrom": "AUD",
+        "expirationDate": "2017-01-05"
+    },
+    {
+        "exchangeRateId": "AUD-CAD",
+        "exchangeRate": "0.9708",
+        "currencyTo": "CAD",
+        "activationDate": "2017-01-05",
+        "currencyFrom": "AUD",
+        "expirationDate": "2017-01-06"
+    },
+    {
+        "exchangeRateId": "AUD-CAD",
+        "exchangeRate": "0.9668",
+        "currencyTo": "CAD",
+        "activationDate": "2017-01-06",
+        "currencyFrom": "AUD",
+        "expirationDate": "2017-01-07"
+    },
+    {
+        "exchangeRateId": "AUD-CAD",
+        "exchangeRate": "0.9728",
+        "currencyTo": "CAD",
+        "activationDate": "2017-01-09",
+        "currencyFrom": "AUD",
+        "expirationDate": "2017-01-10"
+    }
+]

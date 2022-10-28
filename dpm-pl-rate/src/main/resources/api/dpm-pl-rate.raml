@@ -1,0 +1,54 @@
+#%RAML 1.0
+title: dpm-pl-rate
+protocols:
+  - HTTP
+
+/exchange-rate-summary:
+  get:
+    queryParameters:
+      startDate?:
+        example: 2022-10-24
+        type: date-only | nil
+      endDate?:
+        example: 2022-10-24
+        type: date-only | nil
+      seriesNames?:
+        example: FXUSDCAD
+        type: string | nil
+      format?:
+        type: string | nil
+        example: json xml csv
+    responses:
+      "200":
+        body:
+          application/json:
+            examples:
+              output: [
+                      {
+                      "exchangeRateId": "AUD-CAD",
+                      "exchangeRate": 0.9095,
+                      "currencyFrom": "AUD",
+                      "currencyTo": "CAD",
+                      "activationDate": "2021-11-25",
+                      "expirationDate": "2021-11-26"
+                      },
+                      {
+                      "exchangeRateId": "CHF-CAD",
+                      "exchangeRate": 1.3527,
+                      "currencyFrom": "CHF",
+                      "currencyTo": "CAD",
+                      "activationDate": "2021-11-25",
+                      "expirationDate": "2021-11-26"
+                      },
+                      {
+                      "exchangeRateId": "CNY-CAD",
+                      "exchangeRate": 0.1981,
+                      "currencyFrom": "CNY",
+                      "currencyTo": "CAD",
+                      "activationDate": "2021-11-25",
+                      "expirationDate": "2021-11-26"
+                      }
+                      ]          
+/compare-rates:
+  get:
+    

@@ -1,0 +1,57 @@
+{
+    "terms": {
+        "url": "https://www.bankofcanada.ca/terms/"
+    },
+    "seriesDetail": {
+        "FXAUDCAD": {
+            "label": "AUD/CAD",
+            "description": "Australian dollar to Canadian dollar daily exchange rate",
+            "dimension": {
+                "key": "d",
+                "name": "date"
+            }
+        },
+        "FXCHFCAD": {
+            "label": "CHF/CAD",
+            "description": "Swiss franc to Canadian dollar daily exchange rate",
+            "dimension": {
+                "key": "d",
+                "name": "date"
+            }
+        },
+        "FXCNYCAD": {
+            "label": "CNY/CAD",
+            "description": "Chinese renminbi to Canadian dollar daily exchange rate",
+            "dimension": {
+                "key": "d",
+                "name": "date"
+            }
+        }
+    },
+    "observations": [
+        {
+            "d": "2021-11-25",
+            "FXAUDCAD": {
+                "v": "0.9095"
+            },
+            "FXCNYCAD": {
+                "v": "0.1981"
+            },
+            "FXCHFCAD": {
+                "v": "1.3527"
+            }
+        },
+        {
+            "d": "2021-11-26",
+            "FXAUDCAD": {
+                "v": "0.9107"
+            },
+            "FXCNYCAD": {
+                "v": "0.1998"
+            },
+            "FXCHFCAD": {
+                "v": "1.3826"
+            }
+        }
+    ]
+}

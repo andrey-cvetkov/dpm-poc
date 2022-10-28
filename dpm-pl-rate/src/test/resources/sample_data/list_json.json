@@ -1,0 +1,26 @@
+[
+{
+"exchangeRateId": "AUD-CAD",
+"exchangeRate": 0.9095,
+"currencyFrom": "AUD",
+"currencyTo": "CAD",
+"activationDate": "2021-11-25",
+"expirationDate": "2021-11-26"
+},
+{
+"exchangeRateId": "CHF-CAD",
+"exchangeRate": 1.3527,
+"currencyFrom": "CHF",
+"currencyTo": "CAD",
+"activationDate": "2021-11-25",
+"expirationDate": "2021-11-26"
+},
+{
+"exchangeRateId": "CNY-CAD",
+"exchangeRate": 0.1981,
+"currencyFrom": "CNY",
+"currencyTo": "CAD",
+"activationDate": "2021-11-25",
+"expirationDate": "2021-11-26"
+}
+]

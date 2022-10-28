@@ -1,0 +1,17 @@
+%dw 2.0
+
+type auto_7ef4fc44_b833_4100_bfe3_982bbf3e9c17_Input_Payload = {|
+  terms: {| url: String |}, 
+  seriesDetail: {|
+    FXUSDCAD: {|
+      label: String, 
+      description: String, 
+      dimension: {|
+        key: String, 
+        name: String
+      |}
+    |}
+  |}, 
+  observations: Array<{|    d: String,     FXUSDCAD: {| v: String |}  |}>
+|}
+

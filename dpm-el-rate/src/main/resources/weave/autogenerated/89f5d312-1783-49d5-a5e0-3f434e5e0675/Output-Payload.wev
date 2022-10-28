@@ -1,0 +1,12 @@
+%dw 2.0
+
+type auto_89f5d312_1783_49d5_a5e0_3f434e5e0675_Output_Payload = {
+  exchangeRateId: String, 
+  exchangeRate: String, 
+  currencyTo: String, 
+  activationDate: String, 
+  currencyFrom: String, 
+  expirationDate: String, 
+  _?: Any
+}
+

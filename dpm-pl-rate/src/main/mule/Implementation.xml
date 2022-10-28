@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3ad53809-2090-468e-bf08-d510087f26a6" basePath="/api" >
+		<http:request-connection host="0.0.0.0" port="8083" />
+	</http:request-config>
+	<http:request-config name="HTTP_Request_Mock_Request" doc:name="HTTP Request configuration" doc:id="5c6c90ce-05cd-4f30-931a-c3a88a5a7d8c" >
+		<http:request-connection host="0.0.0.0" port="8084" />
+	</http:request-config>
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="41b7ff00-d8ee-4458-a2fe-3e26e156cc4e" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://localhost:61616" maxRedelivery="5" >
+				<jms:trusted-packages />
+			</jms:factory-configuration>
+		</jms:active-mq-connection>
+	</jms:config>
+	<flow name="pl-getRateSummaryFlow" doc:id="0578f955-ab28-4415-be4d-84bb18db7f2a" >
+		<logger level="INFO" doc:name="Logger" doc:id="c4fb4c0d-00cb-45d7-9f2c-3f4a662b28e9" message="PL flow -&gt; calling SL"/>
+		<set-variable value='#[attributes.queryParams.format default "json"]' doc:name="Set varFormat" doc:id="61e96c33-4ee7-4792-b6f0-23e399aad367" variableName="varFormat"/>
+		<http:request method="GET" doc:name="RequestToSLBoc" doc:id="05b75d3c-0cac-4952-88a1-7856b8d648b3" config-ref="HTTP_Request_configuration" path="/exchange-rate-summary" target="bocResponse">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	("endDate" : attributes.queryParams.endDate) if (attributes.queryParams.endDate != null),
+	("startDate" : attributes.queryParams.startDate) if (attributes.queryParams.startDate != null),
+	"seriesNames" : attributes.queryParams.seriesNames,
+	"format" : vars.varFormat
+	
+}]]]></http:query-params>
+		</http:request>
+		<choice doc:name="Choice" doc:id="5f28de08-1278-40bb-b93f-b11e6c17adb2" >
+			<when expression="#[vars.varFormat == 'xml']">
+				<ee:transform doc:name="Transform Message" doc:id="4a9686e0-e11c-4a9f-b441-42b1ba2be4cf">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/json
+
+fun fixRateId(str) = substring(str,2,5) ++ "-" ++ substring(str,5,8)
+fun getCurrenctyTo(str) = substring(str,5,8)
+fun getCurrenctyFrom(str) = substring(str,2,5)
+fun addOneDay(str) = str + |P1D|
+
+---
+flatten(
+	do {
+		var observations = vars.bocResponse.data.observations..*o
+		---
+		observations map (o) -> 
+		do {
+			var obsDate = o.@d
+			var obsObjects = o..*v
+			---
+			obsObjects map (v) -> {
+				exchangeRateId: fixRateId(v.@s),
+				exchangeRate: v,
+				currencyTo: getCurrenctyTo(v.@s),
+				activationDate: obsDate,
+				currencyFrom: getCurrenctyFrom(v.@s),
+				expirationDate: addOneDay(obsDate)
+			}
+		}
+	}
+)
+
+]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="bocResponseT" ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/json
+
+fun fixRateId(str) = substring(str,2,5) ++ "-" ++ substring(str,5,8)
+fun getCurrenctyTo(str) = substring(str,5,8)
+fun getCurrenctyFrom(str) = substring(str,2,5)
+fun addOneDay(str) = str + |P1D|
+
+---
+flatten(
+	do {
+		var observations = vars.bocResponse.data.observations..*o
+		---
+		observations map (o) -> 
+		do {
+			var obsDate = o.@d
+			var obsObjects = o..*v
+			---
+			obsObjects map (v) -> {
+				exchangeRateId: fixRateId(v.@s),
+				exchangeRate: v,
+				currencyTo: getCurrenctyTo(v.@s),
+				activationDate: obsDate,
+				currencyFrom: getCurrenctyFrom(v.@s),
+				expirationDate: addOneDay(obsDate)
+			}
+		}
+	}
+)
+
+]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<when expression="#[vars.varFormat == 'csv']">
+				<set-payload value="#[payload]" doc:name="Set Payload" doc:id="37c3e90b-2333-4c67-83c8-19aac23ea198" />
+			</when>
+			<when expression="#[vars.varFormat == 'json']">
+				<ee:transform doc:name="Transform Message" doc:id="9b30fe0a-66fa-438f-ab51-f74d10de728a">
+					<ee:message>
+						<ee:set-payload><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/json
+
+fun fixRateId(str) = substring(str,2,5) ++ "-" ++ substring(str,5,8)
+fun getCurrenctyTo(str) = substring(str,5,8)
+fun getCurrenctyFrom(str) = substring(str,2,5)
+fun addOneDay(str) = str + |P1D|
+---
+flatten(
+do {
+	var observations = vars.bocResponse.observations
+	---
+	observations map(o) ->
+	do {
+		var d = o.d
+		var onlyFX = o - "d"
+		var keys = namesOf(onlyFX)
+		var values = onlyFX
+		---
+		onlyFX pluck($) map(x) -> {
+			exchangeRateId: fixRateId(keys[$$]),
+			exchangeRate: x.v,
+			currencyTo: getCurrenctyTo(keys[$$]),
+			activationDate: d,
+			currencyFrom: getCurrenctyFrom(keys[$$]),
+			expirationDate: addOneDay(d)
+		}	
+		
+	}
+}
+)
+]]></ee:set-payload>
+					</ee:message>
+					<ee:variables >
+						<ee:set-variable variableName="bocResponseT" ><![CDATA[%dw 2.0
+import * from dw::core::Strings
+output application/json
+
+fun fixRateId(str) = substring(str,2,5) ++ "-" ++ substring(str,5,8)
+fun getCurrenctyTo(str) = substring(str,5,8)
+fun getCurrenctyFrom(str) = substring(str,2,5)
+fun addOneDay(str) = str + |P1D|
+---
+flatten(
+do {
+	var observations = vars.bocResponse.observations
+	---
+	observations map(o) ->
+	do {
+		var d = o.d
+		var onlyFX = o - "d"
+		var keys = namesOf(onlyFX)
+		var values = onlyFX
+		---
+		onlyFX pluck($) map(x) -> {
+			exchangeRateId: fixRateId(keys[$$]),
+			exchangeRate: x.v,
+			currencyTo: getCurrenctyTo(keys[$$]),
+			activationDate: d,
+			currencyFrom: getCurrenctyFrom(keys[$$]),
+			expirationDate: addOneDay(d)
+		}	
+		
+	}
+}
+)
+]]></ee:set-variable>
+					</ee:variables>
+				</ee:transform>
+			</when>
+			<otherwise>
+				<set-payload value="#[payload]" doc:name="Set Payload" doc:id="13a57362-8508-41b0-b50d-def30bd2e061" />
+			</otherwise>
+		</choice>
+		<http:request method="GET" doc:name="RequestToSLMock" doc:id="d5581039-0a27-4317-a47c-df422724bae7" config-ref="HTTP_Request_Mock_Request" path="/api/exchange-rate-summary" target="mockResponseT"/>
+		<ee:transform doc:name="Compare" doc:id="d745b4b6-0b7f-4ba4-94c2-0bb834533286" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+//var mergedResponses = vars.bocResponseT ++ vars.mockResponseT
+---
+[
+	{
+		path: "updated",
+		item: vars.bocResponseT ++ vars.mockResponseT
+	},
+	{
+		path: "new",
+		item: (vars.bocResponseT - vars.mockResponseT) distinctBy $.exchangeRateId
+		//item: vars.mockResponseT - vars.bocResponseT
+	}
+]
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<jms:publish doc:name="Publish" doc:id="8b5fb77d-b273-48c4-8786-f9e0988ee1bb" config-ref="JMS_Config" destination="rateData">
+		</jms:publish>
+	</flow>
+</mule>

@@ -1,0 +1,40 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="mock_csv" format="csv">
+      <types:shape format="weave" example="examples/mock_csv.txt"><![CDATA[%dw 2.0
+
+type mock_csv = Array<{|  Date: String,   CurrencyFrom: String,   Rate: String,   RateId: String|}> {"isQuotedString": "false",
+"header": "true",
+"headerLineNumber": "0"}
+
+]]></types:shape>
+      <types:properties>
+        <types:property name="headerLineNumber" value="0"/>
+        <types:property name="header" value="true"/>
+        <types:property name="isQuotedString" value="false"/>
+      </types:properties>
+    </types:type>
+    <types:type name="mock_json" format="json">
+      <types:shape format="weave" example="examples/target_mock.json"><![CDATA[%dw 2.0
+
+type mock_json = Array<{|  exchangeRateId: String,   exchangeRate: Number {"typeId": "double"},   currencyFrom: String,   currencyTo: String,   activationDate: String,   expirationDate: String|}> {"example": "[{\\\"exchangeRateId\\\":\\\"CHF-CAD\\\",\\\"exchangeRate\\\":1.3608,\\\"currencyFrom\\\":\\\"CHF\\\",\\\"currencyTo\\\":\\\"CAD\\\",\\\"activationDate\\\":\\\"2021-11-03\\\",\\\"expirationDate\\\":\\\"2021-11-04\\\"},{\\\"exchangeRateId\\\":\\\"CNY-CAD\\\",\\\"exchangeRate\\\":0.1939,\\\"currencyFrom\\\":\\\"CNY\\\",\\\"currencyTo\\\":\\\"CAD\\\",\\\"activationDate\\\":\\\"2021-11-03\\\",\\\"expirationDate\\\":\\\"2021-11-04\\\"}]"}
+
+]]></types:shape>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#c2d37961-7e31-4525-962e-3e04dd7a2850">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="mock_csv"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="mock_json"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

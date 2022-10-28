@@ -1,0 +1,13 @@
+"TERMS AND CONDITIONS"
+"https://www.bankofcanada.ca/terms/"
+
+"SERIES"
+"id","label","description"
+"FXAUDCAD","AUD/CAD","Australian dollar to Canadian dollar daily exchange rate"
+"FXCHFCAD","CHF/CAD","Swiss franc to Canadian dollar daily exchange rate"
+"FXCNYCAD","CNY/CAD","Chinese renminbi to Canadian dollar daily exchange rate"
+
+"OBSERVATIONS"
+"date","FXAUDCAD","FXCHFCAD","FXCNYCAD"
+"2021-11-25","0.9095","1.3527","0.1981"
+"2021-11-26","0.9107","1.3826","0.1998"

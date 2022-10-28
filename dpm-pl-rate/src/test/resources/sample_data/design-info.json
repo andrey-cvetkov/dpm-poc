@@ -1,0 +1,10 @@
+{
+  "sampleData": {
+    "ea9abbf6-1033-4a94-9906-827469143fe6": {
+      "payload": "sample_data/list_csv.csv"
+    },
+    "d745b4b6-0b7f-4ba4-94c2-0bb834533286": {
+      "vars-bocResponseT": "sample_data/list_json.json"
+    }
+  }
+}

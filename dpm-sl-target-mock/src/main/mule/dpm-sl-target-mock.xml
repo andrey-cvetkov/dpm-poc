@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config_targetMockListener" doc:name="HTTP Listener config" doc:id="4959c75f-8792-4139-896e-635db6e37a6b" >
+		<http:listener-connection host="0.0.0.0" port="8084" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration_targetMockRequest" doc:name="HTTP Request configuration" doc:id="768dd869-9664-4325-8c32-8e6f880c0980" >
+		<http:request-connection host="run.mocky.io" port="80" />
+	</http:request-config>
+	<flow name="dpm-sl-target-mockFlow" doc:id="ec9293a2-916e-4848-a72d-37e4312f7aee" >
+		<http:listener doc:name="Listener" doc:id="bd25e888-270e-4439-8690-4cb2d77911c5" config-ref="HTTP_Listener_config_targetMockListener" path="/api/exchange-rate-summary"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c9541f26-1aa6-4b18-81c6-ff075bcf845d" message="Calling -&gt; mocky.io"/>
+		<http:request method="GET" doc:name="Request" doc:id="22f544d2-b7da-45be-b10e-caf682e39d2c" config-ref="HTTP_Request_configuration_targetMockRequest" path="/v3/83f9baab-9cf7-4dda-b479-d5cf022eb4a5"/>
+		<ee:transform doc:name="Transform Message" doc:id="c2d37961-7e31-4525-962e-3e04dd7a2850" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+
+fun formatDate(str) = str as Date {format: 'dd/MM/yyyy'} as String {format: 'yyyy-MM-dd'}
+fun addOneDay(str) = str + |P1D|
+---
+
+(payload map {
+	
+	exchangeRateId: $.RateId,
+	exchangeRate: $.Rate,
+	currencyTo: ($.RateId splitBy(/-/))[1],
+	activationDate: formatDate($.Date),
+	currencyFrom: $.CurrencyFrom,
+	expirationDate: addOneDay(formatDate($.Date))
+})
+]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

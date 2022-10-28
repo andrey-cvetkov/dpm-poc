@@ -1,0 +1,8 @@
+{
+  "sampleData": {
+    "81bc92ff-51d1-4d4f-8754-81b7fd87092e": {
+      "vars-bocResponse": "sample_data/java.dwl",
+      "vars-cdm": "sample_data/json_1.json"
+    }
+  }
+}

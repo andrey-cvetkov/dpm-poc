@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:jms="http://www.mulesoft.org/schema/mule/jms" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
+	<http:request-config name="HTTP_Request_configuration_Bankofcanada" doc:name="HTTP Request configuration" doc:id="22da6d14-50a8-4ee6-b58c-943befed47a9" >
+		<http:request-connection host="www.bankofcanada.ca" port="80" />
+	</http:request-config>
+	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="f3a55704-897e-4174-a93d-a5d0e022e9cc" >
+		<jms:active-mq-connection username="admin" password="admin" >
+			<jms:factory-configuration brokerUrl="tcp://localhost:61616" />
+		</jms:active-mq-connection>
+	</jms:config>
+	<flow name="sl-getRateSummaryFlow" doc:id="7ef4fc44-b833-4100-bfe3-982bbf3e9c17" >
+		<logger level="INFO" doc:name="Logger" doc:id="e84c76e3-8302-4634-b52a-ee0dcd96ca25" message="SL flow -&gt; calling Bankofcanada API"/>
+		<http:request method="GET" doc:name="RequestToBankofcanada" doc:id="9f8ce4a1-4730-4113-ae96-90e61202ef62" path="/valet/observations/{seriesNames}/{format}" config-ref="HTTP_Request_configuration_Bankofcanada">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	"seriesNames" : attributes.queryParams.seriesNames,
+	"format" : attributes.queryParams.format default "json"
+}]]]></http:uri-params>
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	
+	("end_date" : attributes.queryParams.endDate) if (attributes.queryParams.endDate != null),
+	("start_date" : attributes.queryParams.startDate) if (attributes.queryParams.startDate != null)
+	
+}]]]></http:query-params>
+		</http:request>
+	</flow>
+	<flow name="sl-rateDataFlow" doc:id="1eab7f1b-3aa8-4b08-bbe9-fc0b8b2aee26" >
+		<jms:listener doc:name="On New Message" doc:id="212f3a7c-ba8d-4129-a972-0a2363ee67c8" config-ref="JMS_Config" destination="rateData" ackMode="MANUAL">
+			<jms:consumer-type >
+				<jms:queue-consumer />
+			</jms:consumer-type>
+		</jms:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="30e535e6-448d-40a4-a90c-f2a746c2774a" message="#[payload]"/>
+		<jms:ack doc:name="Ack" doc:id="5303aaf0-4000-4f1b-8704-52c35aaf67fd" ackId="#[attributes.ackId]"/>
+	</flow>
+</mule>

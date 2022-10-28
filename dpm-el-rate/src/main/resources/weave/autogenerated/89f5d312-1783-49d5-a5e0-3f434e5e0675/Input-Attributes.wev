@@ -1,0 +1,27 @@
+%dw 2.0
+
+type auto_89f5d312_1783_49d5_a5e0_3f434e5e0675_Input_Attributes = {|
+  clientCertificate?: {|
+    publicKey?: {|  |}, 
+    "type"?: String, 
+    encoded?: Binary
+  |}, 
+  headers: {|  |}, 
+  listenerPath: String, 
+  method: String, 
+  queryParams: {|
+    startDate?: String, 
+    endDate?: String, 
+    seriesNames?: "FXNZDCAD" | "FXCNYCAD" | "FXCHFCAD" | "FXGBPCAD" | "FXUSDCAD" | "FXAUDCAD" | "FXSEKCAD" | "FXJPYCAD" | "FXMXNCAD" | "FXEURCAD"
+  |}, 
+  queryString: String, 
+  relativePath: String, 
+  remoteAddress: String, 
+  requestPath: String, 
+  requestUri: String, 
+  scheme: String, 
+  uriParams: {|  |}, 
+  version: String, 
+  localAddress: String
+|}
+

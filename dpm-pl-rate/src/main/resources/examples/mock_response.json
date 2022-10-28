@@ -1,0 +1,74 @@
+[
+    {
+        "exchangeRateId": "CHF-CAD",
+        "exchangeRate": "1.3608",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "CHF",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "CNY-CAD",
+        "exchangeRate": "0.1939",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "CNY",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "EUR-CAD",
+        "exchangeRate": "1.4383",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "EUR",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "GBP-CAD",
+        "exchangeRate": "0.05966",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "GBP",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "JPY-CAD",
+        "exchangeRate": "0.01089",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "JPY",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "MXN-CAD",
+        "exchangeRate": "0.05966",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "MXN",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "NZD-CAD",
+        "exchangeRate": "0.8863",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "NZD",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "SEK-CAD",
+        "exchangeRate": "0.145",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "SEK",
+        "expirationDate": "2021-03-12"
+    },
+    {
+        "exchangeRateId": "USD-CAD",
+        "exchangeRate": "1.2417",
+        "currencyTo": "CAD",
+        "activationDate": "2021-03-11",
+        "currencyFrom": "USD",
+        "expirationDate": "2021-03-12"
+    }
+]
