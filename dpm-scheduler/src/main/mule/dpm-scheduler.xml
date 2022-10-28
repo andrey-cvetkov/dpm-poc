@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="248a6871-6964-4710-bc7e-e701b7086ac2" >
+		<http:request-connection host="0.0.0.0" port="8081" />
+	</http:request-config>
 	<flow name="dpm-schedulerFlow" doc:id="5d46ce10-007b-43f1-93e9-4fd6c82a2a70" >
 		<scheduler doc:name="Scheduler" doc:id="4cc7b5e1-3160-4424-91f1-b5b9eb456e7c" >
 			<scheduling-strategy >
@@ -10,5 +14,15 @@
 			</scheduling-strategy>
 		</scheduler>
 		<logger level="INFO" doc:name="Logger" doc:id="776f39e2-8c70-4b7a-8270-b10cf81d5ccd" message="CRON STARTED"/>
+		<http:request method="GET" doc:name="Request" doc:id="a1782f1b-e1fa-4901-ba17-ccbe8f4f098d" config-ref="HTTP_Request_configuration" path="/api/compare-rates">
+			<http:query-params ><![CDATA[#[output application/java
+---
+{
+	endDate : "2021-11-28",
+	seriesNames : "FXJPYCAD,FXMXNCAD",
+	format : "json",
+	startDate : "2021-11-24"
+}]]]></http:query-params>
+		</http:request>
 	</flow>
 </mule>
