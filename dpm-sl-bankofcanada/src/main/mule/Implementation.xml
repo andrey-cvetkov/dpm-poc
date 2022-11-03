@@ -33,7 +33,7 @@ http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/
 }]]]></http:query-params>
 		</http:request>
 	</flow>
-	<flow name="sl-rateDataFlow" doc:id="1eab7f1b-3aa8-4b08-bbe9-fc0b8b2aee26" >
+<!-- [STUDIO:"sl-rateDataFlow"]	<flow name="sl-rateDataFlow" doc:id="1eab7f1b-3aa8-4b08-bbe9-fc0b8b2aee26" >
 		<jms:listener doc:name="On New Message" doc:id="212f3a7c-ba8d-4129-a972-0a2363ee67c8" config-ref="JMS_Config" destination="rateData" ackMode="MANUAL">
 			<jms:consumer-type >
 				<jms:queue-consumer />
@@ -41,5 +41,5 @@ http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/
 		</jms:listener>
 		<logger level="INFO" doc:name="Logger" doc:id="30e535e6-448d-40a4-a90c-f2a746c2774a" message="#[payload]"/>
 		<jms:ack doc:name="Ack" doc:id="5303aaf0-4000-4f1b-8704-52c35aaf67fd" ackId="#[attributes.ackId]"/>
-	</flow>
+	</flow> [STUDIO] -->
 </mule>

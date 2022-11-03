@@ -5,11 +5,10 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="48f9a230-f153-471e-87a2-5616065e1c17" basePath="/api" >
-		<http:request-connection host="0.0.0.0" port="8082" />
-	</http:request-config>
+
 	<flow name="el-getRateSummaryFlow" doc:id="89f5d312-1783-49d5-a5e0-3f434e5e0675" >
 		<logger level="INFO" doc:name="Logger" doc:id="7205313b-c104-42c1-92cc-424778819133" message='Calling PL' />
+		<logger level="INFO" doc:name="Logger" doc:id="b79e2731-bac4-47a2-ab88-38474b5e3fdc" message='#[output application/java&#10;---&#10;&#10;"Username: " ++ Mule::p("secure::example.username") &#10;++ "-" ++&#10;"Password: " ++ Mule::p("secure::example.password")]'/>
 		<http:request method="GET" doc:name="RequestToPL" doc:id="66e3d1dd-ff62-4bf2-bf54-99904867d0cd" config-ref="HTTP_Request_configuration" path="/exchange-rate-summary">
 			<http:query-params ><![CDATA[#[output application/java
 ---

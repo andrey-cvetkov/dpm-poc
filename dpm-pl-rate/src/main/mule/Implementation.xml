@@ -6,19 +6,14 @@
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
 http://www.mulesoft.org/schema/mule/jms http://www.mulesoft.org/schema/mule/jms/current/mule-jms.xsd">
-	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="3ad53809-2090-468e-bf08-d510087f26a6" basePath="/api" >
-		<http:request-connection host="0.0.0.0" port="8083" />
-	</http:request-config>
-	<http:request-config name="HTTP_Request_Mock_Request" doc:name="HTTP Request configuration" doc:id="5c6c90ce-05cd-4f30-931a-c3a88a5a7d8c" >
-		<http:request-connection host="0.0.0.0" port="8084" />
-	</http:request-config>
-	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="41b7ff00-d8ee-4458-a2fe-3e26e156cc4e" >
+
+<!-- 	<jms:config name="JMS_Config" doc:name="JMS Config" doc:id="41b7ff00-d8ee-4458-a2fe-3e26e156cc4e" >
 		<jms:active-mq-connection username="admin" password="admin" >
 			<jms:factory-configuration brokerUrl="tcp://localhost:61616" maxRedelivery="5" >
 				<jms:trusted-packages />
 			</jms:factory-configuration>
 		</jms:active-mq-connection>
-	</jms:config>
+	</jms:config> -->
 	<flow name="pl-getRateSummaryFlow" doc:id="0578f955-ab28-4415-be4d-84bb18db7f2a" >
 		<logger level="INFO" doc:name="Logger" doc:id="c4fb4c0d-00cb-45d7-9f2c-3f4a662b28e9" message="PL flow -&gt; calling SL"/>
 		<set-variable value='#[attributes.queryParams.format default "json"]' doc:name="Set varFormat" doc:id="61e96c33-4ee7-4792-b6f0-23e399aad367" variableName="varFormat"/>
@@ -209,7 +204,7 @@ output application/json
 ]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
-		<jms:publish doc:name="Publish" doc:id="8b5fb77d-b273-48c4-8786-f9e0988ee1bb" config-ref="JMS_Config" destination="rateData">
-		</jms:publish>
+<!-- [STUDIO:"Publish"]		<jms:publish doc:name="Publish" doc:id="8b5fb77d-b273-48c4-8786-f9e0988ee1bb" config-ref="JMS_Config" destination="rateData">
+		</jms:publish> [STUDIO] -->
 	</flow>
 </mule>

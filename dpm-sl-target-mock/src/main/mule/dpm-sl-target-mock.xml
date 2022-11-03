@@ -5,9 +5,7 @@
 	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
 http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
 http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
-	<http:listener-config name="HTTP_Listener_config_targetMockListener" doc:name="HTTP Listener config" doc:id="4959c75f-8792-4139-896e-635db6e37a6b" >
-		<http:listener-connection host="0.0.0.0" port="8084" />
-	</http:listener-config>
+
 	<http:request-config name="HTTP_Request_configuration_targetMockRequest" doc:name="HTTP Request configuration" doc:id="768dd869-9664-4325-8c32-8e6f880c0980" >
 		<http:request-connection host="run.mocky.io" port="80" />
 	</http:request-config>
